@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # =============================================================================
 # ~/.config/bash/functions.sh — Bash utility functions
 #
@@ -30,20 +31,20 @@ extract() {
         return 1
     fi
     case "${1}" in
-        *.tar.bz2)  tar xjf "${1}"    ;;
-        *.tar.gz)   tar xzf "${1}"    ;;
-        *.tar.xz)   tar xJf "${1}"    ;;
-        *.tar.zst)  tar --zstd -xf "${1}" ;;
-        *.tar)      tar xf  "${1}"    ;;
-        *.bz2)      bunzip2 "${1}"    ;;
-        *.gz)       gunzip  "${1}"    ;;
-        *.tbz2)     tar xjf "${1}"    ;;
-        *.tgz)      tar xzf "${1}"    ;;
-        *.zip)      unzip   "${1}"    ;;
-        *.Z)        uncompress "${1}" ;;
-        *.7z)       7z x    "${1}"    ;;
-        *.xz)       unxz    "${1}"    ;;
-        *.zst)      zstd -d "${1}"    ;;
+        *.tar.bz2) tar xjf "${1}" ;;
+        *.tar.gz) tar xzf "${1}" ;;
+        *.tar.xz) tar xJf "${1}" ;;
+        *.tar.zst) tar --zstd -xf "${1}" ;;
+        *.tar) tar xf "${1}" ;;
+        *.bz2) bunzip2 "${1}" ;;
+        *.gz) gunzip "${1}" ;;
+        *.tbz2) tar xjf "${1}" ;;
+        *.tgz) tar xzf "${1}" ;;
+        *.zip) unzip "${1}" ;;
+        *.Z) uncompress "${1}" ;;
+        *.7z) 7z x "${1}" ;;
+        *.xz) unxz "${1}" ;;
+        *.zst) zstd -d "${1}" ;;
         *)
             echo "'${1}' cannot be extracted — unknown format." >&2
             return 1
@@ -74,8 +75,8 @@ fcd() {
         return 1
     fi
     local dir
-    dir="$(find "${1:-.}" -type d -not -path '*/.git/*' 2>/dev/null \
-        | fzf --prompt="cd > " --preview='ls -1 {}')"
+    dir="$(find "${1:-.}" -type d -not -path '*/.git/*' 2>/dev/null |
+        fzf --prompt="cd > " --preview='ls -1 {}')"
     [[ -n "${dir}" ]] && cd "${dir}" || return 1
 }
 
@@ -89,8 +90,8 @@ fopen() {
         return 1
     fi
     local file
-    file="$(find "${1:-.}" -type f -not -path '*/.git/*' 2>/dev/null \
-        | fzf --prompt="open > " --preview='cat {}')"
+    file="$(find "${1:-.}" -type f -not -path '*/.git/*' 2>/dev/null |
+        fzf --prompt="open > " --preview='cat {}')"
     if [[ -n "${file}" ]]; then
         "${EDITOR:-nano}" "${file}"
     fi
@@ -106,9 +107,9 @@ hist() {
         return 1
     fi
     local cmd
-    cmd="$(history | sort -rn | awk '{$1=""; sub(/^ /, ""); print}' \
-        | awk '!seen[$0]++' \
-        | fzf --prompt="history > " --no-sort)"
+    cmd="$(history | sort -rn | awk '{$1=""; sub(/^ /, ""); print}' |
+        awk '!seen[$0]++' |
+        fzf --prompt="history > " --no-sort)"
     if [[ -n "${cmd}" ]]; then
         history -s "${cmd}"
         eval "${cmd}"
@@ -124,7 +125,7 @@ mkenv() {
         echo ".env already exists." >&2
         return 1
     fi
-    cat > .env << 'EOF'
+    cat >.env <<'EOF'
 # Environment variables — do NOT commit this file
 # APP_ENV=development
 # APP_PORT=8080
@@ -171,8 +172,8 @@ denter() {
         container="$(docker ps --format '{{.Names}}' | grep "${1}" | head -1)"
     else
         if command -v fzf &>/dev/null; then
-            container="$(docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}' \
-                | fzf --prompt="container > " | awk '{print $1}')"
+            container="$(docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}' |
+                fzf --prompt="container > " | awk '{print $1}')"
         else
             docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'
             echo "Usage: denter <container_name>" >&2
@@ -183,8 +184,8 @@ denter() {
         echo "No matching container found." >&2
         return 1
     fi
-    docker exec -it "${container}" /bin/bash 2>/dev/null \
-        || docker exec -it "${container}" /bin/sh
+    docker exec -it "${container}" /bin/bash 2>/dev/null ||
+        docker exec -it "${container}" /bin/sh
 }
 
 # ---------------------------------------------------------------------------
@@ -196,7 +197,7 @@ confirm() {
     local reply
     read -r -p "${prompt} [y/N] " reply
     case "${reply}" in
-        [Yy][Ee][Ss]|[Yy]) return 0 ;;
+        [Yy][Ee][Ss] | [Yy]) return 0 ;;
         *) return 1 ;;
     esac
 }

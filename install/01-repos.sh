@@ -8,12 +8,20 @@
 #   - VSCodium    (download.vscodium.com) — OPTIONAL, set INSTALL_VSCODIUM=1
 #
 # All sources use official GPG keys and are pinned to stable channels.
+#
+# Environment variables:
+#   SKIP_DOCKER=1      — skip Docker CE repository setup
+#                        Set automatically in Docker containers.
+#   INSTALL_VSCODIUM=1 — also install VSCodium (GUI editor, optional)
 # =============================================================================
 
 set -euo pipefail
 
 # Set INSTALL_VSCODIUM=1 to also configure the VSCodium repository.
 INSTALL_VSCODIUM="${INSTALL_VSCODIUM:-0}"
+
+# Set SKIP_DOCKER=1 to skip Docker CE installation (e.g. inside containers).
+SKIP_DOCKER="${SKIP_DOCKER:-0}"
 
 # ---------------------------------------------------------------------------
 # GitHub CLI
@@ -29,13 +37,13 @@ setup_gh_repo() {
     # Prerequisites for downloading and verifying the GPG key
     sudo apt-get install -y --no-install-recommends ca-certificates curl gnupg
 
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-        | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg |
+        sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
     sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
 
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] \
-https://cli.github.com/packages stable main" \
-        | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+https://cli.github.com/packages stable main" |
+        sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
 
     sudo apt-get update -qq
     sudo apt-get install -y gh
@@ -64,8 +72,8 @@ setup_docker_repo() {
     # shellcheck disable=SC1091
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
 https://download.docker.com/linux/debian \
-$(. /etc/os-release && echo "${VERSION_CODENAME}") stable" \
-        | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+$(. /etc/os-release && echo "${VERSION_CODENAME}") stable" |
+        sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 
     sudo apt-get update -qq
     sudo apt-get install -y \
@@ -90,13 +98,13 @@ setup_vscodium_repo() {
 
     echo "    Setting up VSCodium repository..."
 
-    wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
-        | gpg --dearmor \
-        | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+    wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg |
+        gpg --dearmor |
+        sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
 
     echo "deb [signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg] \
-https://download.vscodium.com/debs vscodium main" \
-        | sudo tee /etc/apt/sources.list.d/vscodium.list > /dev/null
+https://download.vscodium.com/debs vscodium main" |
+        sudo tee /etc/apt/sources.list.d/vscodium.list >/dev/null
 
     sudo apt-get update -qq
     sudo apt-get install -y codium
@@ -109,7 +117,12 @@ https://download.vscodium.com/debs vscodium main" \
 echo "==> [01-repos] Setting up external repositories..."
 
 setup_gh_repo
-setup_docker_repo
+
+if [[ "${SKIP_DOCKER}" == "1" ]]; then
+    echo "    SKIP_DOCKER=1: skipping Docker CE repository setup."
+else
+    setup_docker_repo
+fi
 
 if [[ "${INSTALL_VSCODIUM}" == "1" ]]; then
     setup_vscodium_repo

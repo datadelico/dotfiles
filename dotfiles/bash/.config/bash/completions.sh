@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # =============================================================================
 # ~/.config/bash/completions.sh — Extra shell completions
 #

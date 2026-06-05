@@ -7,7 +7,7 @@ This directory is for architecture and flow diagrams.
 ## Recommended diagrams
 
 | Filename | Description |
-|---|---|
+| --- | --- |
 | `install-flow.svg` | Installation phase flow diagram |
 | `stow-linking.svg` | How GNU Stow creates symlinks |
 | `repo-structure.svg` | Repository structure overview |

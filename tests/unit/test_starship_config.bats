@@ -99,5 +99,5 @@ STARSHIP_CONFIG="${BATS_TEST_DIRNAME}/../../dotfiles/starship/.config/starship.t
 # ---------------------------------------------------------------------------
 @test "starship.toml: does not contain tab characters" {
     run grep -P '\t' "${STARSHIP_CONFIG}"
-    assert_failure  # grep returns 1 when no match found — that is the success case
+    assert_failure # grep returns 1 when no match found — that is the success case
 }

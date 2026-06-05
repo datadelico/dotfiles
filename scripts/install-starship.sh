@@ -13,7 +13,8 @@
 
 set -euo pipefail
 
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly SCRIPT_DIR
 source "${SCRIPT_DIR}/../config/versions.sh"
 
 readonly BINARY="starship"
@@ -42,7 +43,15 @@ curl -fsSL "${BASE_URL}/${ASSET}" -o "${TMP_DIR}/${ASSET}"
 curl -fsSL "${BASE_URL}/${CHECKSUM_FILE}" -o "${TMP_DIR}/${CHECKSUM_FILE}"
 
 echo "    Verifying SHA-256 checksum..."
-(cd "${TMP_DIR}" && sha256sum -c "${CHECKSUM_FILE}")
+expected_hash="$(tr -d '[:space:]' <"${TMP_DIR}/${CHECKSUM_FILE}")"
+actual_hash="$(sha256sum "${TMP_DIR}/${ASSET}" | awk '{print $1}')"
+if [[ "${expected_hash}" != "${actual_hash}" ]]; then
+    echo "ERROR: SHA-256 checksum mismatch for ${ASSET}" >&2
+    echo "  Expected: ${expected_hash}" >&2
+    echo "  Actual:   ${actual_hash}" >&2
+    exit 1
+fi
+echo "    Checksum verified."
 
 tar xf "${TMP_DIR}/${ASSET}" -C "${TMP_DIR}"
 install -m 0755 "${TMP_DIR}/${BINARY}" "${INSTALL_BIN_DIR}/${BINARY}"

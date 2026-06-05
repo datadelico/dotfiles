@@ -103,9 +103,9 @@ check_link ".config/alacritty/alacritty.toml"
 step "Bash startup"
 # ---------------------------------------------------------------------------
 if bash --norc -c 'source "${HOME}/.bashrc" && echo "bashrc_ok"' 2>/dev/null | grep -q "bashrc_ok"; then
-    pass "~/.bashrc sources without errors"
+    pass "${HOME}/.bashrc sources without errors"
 else
-    fail "~/.bashrc has errors on source"
+    fail "${HOME}/.bashrc has errors on source"
     ((ERRORS++))
 fi
 

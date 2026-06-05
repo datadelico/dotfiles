@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # =============================================================================
 # ~/.config/bash/aliases.sh — Command aliases
 #

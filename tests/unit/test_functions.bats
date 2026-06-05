@@ -45,7 +45,7 @@ teardown() {
 # ---------------------------------------------------------------------------
 @test "extract: extracts a .tar.gz archive" {
     local archive="${TEST_TMPDIR}/test.tar.gz"
-    echo "hello" > "${TEST_TMPDIR}/file.txt"
+    echo "hello" >"${TEST_TMPDIR}/file.txt"
     tar czf "${archive}" -C "${TEST_TMPDIR}" file.txt
     rm "${TEST_TMPDIR}/file.txt"
     (cd "${TEST_TMPDIR}" && extract "${archive}")
@@ -54,7 +54,7 @@ teardown() {
 
 @test "extract: extracts a .zip archive" {
     local archive="${TEST_TMPDIR}/test.zip"
-    echo "hello" > "${TEST_TMPDIR}/file.txt"
+    echo "hello" >"${TEST_TMPDIR}/file.txt"
     (cd "${TEST_TMPDIR}" && zip -q "${archive}" file.txt)
     rm "${TEST_TMPDIR}/file.txt"
     (cd "${TEST_TMPDIR}" && extract "${archive}")

@@ -97,27 +97,27 @@ export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/docker.sock"
 
 ### Solución de problemas de Rootless
 
-**Problema: `newuidmap` no encontrado**
+#### Problema: `newuidmap` no encontrado
 
 ```bash
 sudo apt-get install uidmap
 ```
 
-**Problema: sin entradas subuid/subgid**
+#### Problema: sin entradas subuid/subgid
 
 ```bash
 sudo usermod --add-subuids 100000-165535 "${USER}"
 sudo usermod --add-subgids 100000-165535 "${USER}"
 ```
 
-**Problema: el servicio no arranca**
+#### Problema: el servicio no arranca
 
 ```bash
 systemctl --user status docker
 journalctl --user -u docker
 ```
 
-**Problema: DOCKER_HOST no definida tras reiniciar**
+#### Problema: DOCKER_HOST no definida tras reiniciar
 
 Asegúrate de que `~/.bash_profile` se cargue al iniciar sesión. Los dotfiles
 lo configuran automáticamente mediante el `~/.bash_profile` gestionado por Stow.

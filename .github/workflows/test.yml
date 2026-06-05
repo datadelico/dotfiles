@@ -53,7 +53,11 @@ jobs:
 
       - name: Install external binaries
         run: |
-          bash install/02-binaries.sh
+          SKIP_GUI=1 bash install/02-binaries.sh
+
+      - name: Remove default shell dotfiles (prevents Stow conflicts)
+        run: |
+          rm -f ~/.bashrc ~/.bash_profile ~/.bash_logout ~/.profile ~/.inputrc
 
       - name: Apply dotfiles with GNU Stow
         run: |

@@ -20,7 +20,7 @@ Console NF font at 13pt, with the Dracula color scheme.
 ### Recommended screenshots to capture
 
 | Filename | Content |
-|---|---|
+| --- | --- |
 | `prompt-local.png` | Starship prompt in a local session |
 | `prompt-ssh.png` | Starship prompt during an SSH session (with hostname + SSH label) |
 | `prompt-root.png` | Starship prompt as root (red username) |

@@ -49,6 +49,12 @@ COPY --chown=${USERNAME}:${USERNAME} . /home/${USERNAME}/dotfiles/
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}/dotfiles
 
+# Skip Docker CE and GUI packages — not needed in the test container:
+#   SKIP_DOCKER=1 avoids Docker-in-Docker which fails in build environments
+#   SKIP_GUI=1    avoids alacritty and icon theme (headless container)
+ENV SKIP_DOCKER=1
+ENV SKIP_GUI=1
+
 # Install everything (submodules are already in the repo copy)
 RUN make install
 

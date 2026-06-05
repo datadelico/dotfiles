@@ -4,11 +4,16 @@
 #
 # Installs only packages that are missing (idempotent).
 # Run as a user with sudo privileges.
+#
+# Environment variables:
+#   SKIP_GUI=1    — skip GUI/display packages (alacritty, papirus-icon-theme)
+#                   Useful in headless servers and Docker containers.
 # =============================================================================
 
 set -euo pipefail
 
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Set to 1 to skip graphical packages (set automatically in Docker)
+SKIP_GUI="${SKIP_GUI:-0}"
 
 echo "==> [00-core] Installing core apt packages..."
 
@@ -42,6 +47,10 @@ SHELL_PACKAGES=(
     fd-find
     ripgrep
     tmux
+)
+
+# GUI/display packages — skipped in headless/Docker environments
+GUI_PACKAGES=(
     alacritty
 )
 
@@ -51,7 +60,7 @@ QUALITY_PACKAGES=(
     shfmt
 )
 
-# Theme
+# Theme packages — skipped in headless/Docker environments
 THEME_PACKAGES=(
     papirus-icon-theme
 )
@@ -60,8 +69,16 @@ ALL_PACKAGES=(
     "${CORE_PACKAGES[@]}"
     "${SHELL_PACKAGES[@]}"
     "${QUALITY_PACKAGES[@]}"
-    "${THEME_PACKAGES[@]}"
 )
+
+if [[ "${SKIP_GUI}" != "1" ]]; then
+    ALL_PACKAGES+=(
+        "${GUI_PACKAGES[@]}"
+        "${THEME_PACKAGES[@]}"
+    )
+else
+    echo "    SKIP_GUI=1: skipping alacritty and papirus-icon-theme."
+fi
 
 # Collect packages that are not yet installed
 to_install=()
