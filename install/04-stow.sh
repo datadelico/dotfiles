@@ -28,6 +28,19 @@ fi
 
 echo "==> [04-stow] Applying dotfiles with GNU Stow..."
 
+# Remove any non-symlink files that would conflict with stow.
+# In fresh environments (new user created with useradd -m, GitHub Actions
+# runners, etc.) /etc/skel files are copied to $HOME as regular files.
+# Stow cannot replace regular files with symlinks — remove them first.
+echo "    Removing any regular files that would conflict with stow symlinks..."
+for _conflict in .bashrc .bash_profile .bash_logout .profile .inputrc; do
+    _target="${HOME}/${_conflict}"
+    if [[ -f "${_target}" ]] && [[ ! -L "${_target}" ]]; then
+        echo "      Removing ${_target} (regular file — will be replaced by symlink)"
+        rm -f "${_target}"
+    fi
+done
+
 PACKAGES=(
     bash
     starship
