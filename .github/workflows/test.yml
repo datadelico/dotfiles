@@ -1,0 +1,63 @@
+# =============================================================================
+# .github/workflows/test.yml — Run unit and smoke tests
+#
+# Runs BATS unit tests and the smoke test script on the host runner (not
+# inside Docker). Used for fast feedback on pull requests.
+# =============================================================================
+
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    name: BATS unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.3
+        with:
+          submodules: recursive
+
+      - name: Install test dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y bats stow
+
+      - name: Run unit tests
+        run: bats --recursive tests/unit
+
+  smoke:
+    name: Smoke test (binaries)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.3
+        with:
+          submodules: recursive
+
+      - name: Install core apt packages
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y \
+            build-essential curl file fontconfig git gnupg iproute2 \
+            unzip wget tar jq bash-completion openssh-client htop btop \
+            stow fzf zoxide eza bat fd-find ripgrep tmux shellcheck shfmt
+
+      - name: Install external binaries
+        run: |
+          bash install/02-binaries.sh
+
+      - name: Apply dotfiles with GNU Stow
+        run: |
+          bash install/04-stow.sh
+
+      - name: Run smoke tests
+        run: bash tests/smoke/smoke.sh

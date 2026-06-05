@@ -1,0 +1,170 @@
+# =============================================================================
+# Alacritty terminal configuration
+#
+# Documentation: https://alacritty.org/config-alacritty.html
+# Managed by GNU Stow (dotfiles/alacritty/).
+#
+# Font: HackGen Console NF (installed by make install)
+# Theme: Dracula
+# =============================================================================
+
+[general]
+# Configuration import — uncomment to split into multiple files
+# import = []
+
+# ---------------------------------------------------------------------------
+# Window
+# ---------------------------------------------------------------------------
+[window]
+padding = { x = 8, y = 8 }
+decorations = "full"
+opacity = 1.0
+blur = false
+startup_mode = "Windowed"
+title = "Alacritty"
+dynamic_title = true
+
+# ---------------------------------------------------------------------------
+# Scrolling
+# ---------------------------------------------------------------------------
+[scrolling]
+history = 10000
+multiplier = 3
+
+# ---------------------------------------------------------------------------
+# Font — HackGen Console NF (Nerd Font variant)
+# Install with: make install (or make install-fonts)
+# ---------------------------------------------------------------------------
+[font]
+size = 13.0
+
+[font.normal]
+family = "HackGen Console NF"
+style = "Regular"
+
+[font.bold]
+family = "HackGen Console NF"
+style = "Bold"
+
+[font.italic]
+family = "HackGen Console NF"
+style = "Italic"
+
+[font.bold_italic]
+family = "HackGen Console NF"
+style = "Bold Italic"
+
+# ---------------------------------------------------------------------------
+# Colors — Dracula theme
+# https://draculatheme.com/alacritty
+# ---------------------------------------------------------------------------
+[colors.primary]
+background = "#282a36"
+foreground = "#f8f8f2"
+bright_foreground = "#ffffff"
+
+[colors.cursor]
+text = "#282a36"
+cursor = "#f8f8f2"
+
+[colors.selection]
+text = "CellForeground"
+background = "#44475a"
+
+[colors.normal]
+black   = "#21222c"
+red     = "#ff5555"
+green   = "#50fa7b"
+yellow  = "#f1fa8c"
+blue    = "#bd93f9"
+magenta = "#ff79c6"
+cyan    = "#8be9fd"
+white   = "#f8f8f2"
+
+[colors.bright]
+black   = "#6272a4"
+red     = "#ff6e6e"
+green   = "#69ff94"
+yellow  = "#ffffa5"
+blue    = "#d6acff"
+magenta = "#ff92df"
+cyan    = "#a4ffff"
+white   = "#ffffff"
+
+[colors.footer_bar]
+background = "#282a36"
+foreground = "#f8f8f2"
+
+# ---------------------------------------------------------------------------
+# Bell
+# ---------------------------------------------------------------------------
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+
+# ---------------------------------------------------------------------------
+# Selection
+# ---------------------------------------------------------------------------
+[selection]
+save_to_clipboard = false
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+# ---------------------------------------------------------------------------
+# Cursor
+# ---------------------------------------------------------------------------
+[cursor]
+blink_interval = 700
+unfocused_hollow = true
+
+[cursor.style]
+shape = "Block"
+blinking = "On"
+
+# ---------------------------------------------------------------------------
+# Terminal
+# ---------------------------------------------------------------------------
+[terminal]
+osc52 = "OnlyCopy"
+
+# ---------------------------------------------------------------------------
+# Mouse
+# ---------------------------------------------------------------------------
+[mouse]
+hide_when_typing = true
+
+# ---------------------------------------------------------------------------
+# Key bindings
+# ---------------------------------------------------------------------------
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Control|Shift"
+action = "SpawnNewInstance"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "F11"
+action = "ToggleFullscreen"

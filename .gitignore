@@ -1,0 +1,52 @@
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+tmp/
+
+# Compiled or generated output
+*.o
+*.out
+
+# Logs
+*.log
+logs/
+
+# Node (for markdownlint-cli2 if installed locally)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Shell test artifacts
+.bats_tmp/
+
+# Screenshots produced locally (committed selectively)
+assets/screenshots/*.png
+assets/screenshots/*.jpg
+assets/screenshots/*.gif
+assets/screenshots/*.webp
+!assets/screenshots/README.md
+
+# Font archives downloaded during install
+*.zip
+*.tar.gz
+
+# Docker build cache
+.docker/

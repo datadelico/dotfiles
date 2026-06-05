@@ -1,0 +1,37 @@
+# =============================================================================
+# docker/docker-compose.yml — Docker Compose for dotfiles testing
+# =============================================================================
+
+services:
+  dotfiles-test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: dotfiles-test:latest
+    container_name: dotfiles-test
+    # Run smoke tests + BATS tests, then exit
+    command: >
+      bash -c "
+        echo '=== Smoke Tests ===' &&
+        bash tests/smoke/smoke.sh &&
+        echo '' &&
+        echo '=== Unit Tests ===' &&
+        bats --recursive tests/unit &&
+        echo '' &&
+        echo '=== Integration Tests ===' &&
+        bats --recursive tests/integration &&
+        echo '' &&
+        echo 'All Docker tests passed.'
+      "
+    # No persistent volumes needed for CI test runs
+
+  # Interactive shell for manual inspection
+  dotfiles-shell:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: dotfiles-test:latest
+    container_name: dotfiles-shell
+    stdin_open: true
+    tty: true
+    command: ["/bin/bash", "--login"]

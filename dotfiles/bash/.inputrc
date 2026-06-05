@@ -1,0 +1,65 @@
+# =============================================================================
+# ~/.inputrc — Readline configuration
+#
+# Controls line editing behavior for all programs that use GNU Readline
+# (bash, python REPL, gdb, etc.). Managed by GNU Stow.
+# =============================================================================
+
+# Use the terminal's default settings for 8-bit characters
+set meta-flag on
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# Make Tab autocomplete regardless of filename case
+set completion-ignore-case on
+
+# List all matches when ambiguous
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
+# Do not ring the bell on completion
+set bell-style none
+
+# Display possible completions using different colors
+set colored-stats on
+set colored-completion-prefix on
+
+# Append a slash to symlinked directories during completion
+set mark-symlinked-directories on
+
+# Show extra file information during completion (like ls -F)
+set visible-stats on
+
+# History search with Up/Down arrows — search only the prefix typed
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# Ctrl+Arrow — move word by word
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
+# Page Up / Page Down — navigate history
+"\e[5~": history-search-backward
+"\e[6~": history-search-forward
+
+# Home / End keys
+"\e[H":  beginning-of-line
+"\e[F":  end-of-line
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+
+# Delete key
+"\e[3~": delete-char
+
+# Do not autocomplete hidden files unless the pattern explicitly starts with .
+set match-hidden-files off
+
+# Skip over the text that is already in a completion
+set skip-completed-text on
+
+$if Bash
+    # Bash-specific: cycle through completions with Tab
+    TAB: menu-complete
+    "\e[Z": menu-complete-backward
+$endif

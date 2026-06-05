@@ -1,0 +1,195 @@
+# =============================================================================
+# Starship prompt configuration
+#
+# Design goals:
+#   - Multiline prompt with a clean second line for the cursor
+#   - Absolute path always visible
+#   - Git branch and status on the right
+#   - Command duration for slow commands
+#   - SSH sessions: hostname shown prominently with a visual indicator
+#   - Root sessions: red username and a warning icon
+#   - Nerd Font icons enabled
+#   - Bash compatible (no features requiring zsh/fish)
+#
+# Documentation: https://starship.rs/config/
+# =============================================================================
+
+# Line 1: [user@host if SSH/root] [path] [git] [duration]
+# Line 2: [exit status icon] [prompt character]
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration\
+$fill\
+$jobs\
+$status\
+$line_break\
+$character"""
+
+# Right prompt — shows SSH indicator and time
+right_format = """$env_var$time"""
+
+# ---------------------------------------------------------------------------
+# Username — shown only when root or on SSH
+# ---------------------------------------------------------------------------
+[username]
+disabled = false
+show_always = false
+style_user = "bold green"
+style_root = "bold red"
+format = "[$user]($style)"
+
+# ---------------------------------------------------------------------------
+# Hostname — shown only on SSH connections
+# ---------------------------------------------------------------------------
+[hostname]
+disabled = false
+ssh_only = true
+format = "[@$hostname]($style) "
+style = "bold yellow"
+ssh_symbol = " "
+
+# ---------------------------------------------------------------------------
+# Directory — always show full absolute path
+# ---------------------------------------------------------------------------
+[directory]
+disabled = false
+truncation_length = 0
+truncate_to_repo = false
+format = "[$path]($style)[$read_only]($read_only_style) "
+style = "bold cyan"
+read_only = " 󰌾"
+read_only_style = "red"
+home_symbol = "~"
+
+# ---------------------------------------------------------------------------
+# Git branch
+# ---------------------------------------------------------------------------
+[git_branch]
+disabled = false
+format = "on [$symbol$branch(:$remote_branch)]($style) "
+style = "bold purple"
+symbol = " "
+truncation_length = 40
+
+# ---------------------------------------------------------------------------
+# Git status — shows counts for staged, unstaged, untracked, etc.
+# ---------------------------------------------------------------------------
+[git_status]
+disabled = false
+format = "([$all_status$ahead_behind]($style) )"
+style = "bold red"
+conflicted = "󰩌 "
+ahead = "⇡${count} "
+behind = "⇣${count} "
+diverged = "⇕⇡${ahead_count}⇣${behind_count} "
+up_to_date = " "
+untracked = "? "
+stashed = " "
+modified = "! "
+staged = "+ "
+renamed = "» "
+deleted = "✘ "
+
+# ---------------------------------------------------------------------------
+# Command duration — show for commands taking longer than 2 seconds
+# ---------------------------------------------------------------------------
+[cmd_duration]
+disabled = false
+min_time = 2000
+format = "took [$duration]($style) "
+style = "yellow"
+show_milliseconds = false
+
+# ---------------------------------------------------------------------------
+# SSH environment variable indicator (right prompt)
+# Shows  icon when SSH_CONNECTION is set
+# ---------------------------------------------------------------------------
+[env_var.SSH_CONNECTION]
+disabled = false
+variable = "SSH_CONNECTION"
+default = ""
+format = "[  SSH]($style) "
+style = "bold yellow"
+
+# ---------------------------------------------------------------------------
+# Time (right prompt)
+# ---------------------------------------------------------------------------
+[time]
+disabled = false
+format = "[$time]($style)"
+style = "dimmed white"
+time_format = "%H:%M"
+use_12hr = false
+
+# ---------------------------------------------------------------------------
+# Prompt character — green ❯ on success, red ❯ on error
+# ---------------------------------------------------------------------------
+[character]
+disabled = false
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+# ---------------------------------------------------------------------------
+# Exit status (shown when non-zero)
+# ---------------------------------------------------------------------------
+[status]
+disabled = false
+format = "[$symbol$status]($style) "
+style = "bold red"
+symbol = "✗ "
+success_symbol = ""
+not_executable_meaning = "not executable"
+not_found_meaning = "command not found"
+sigint_meaning = "interrupted"
+signal_symbol = "⚡"
+map_symbol = true
+
+# ---------------------------------------------------------------------------
+# Jobs — show background job count
+# ---------------------------------------------------------------------------
+[jobs]
+disabled = false
+format = "[$symbol$number]($style) "
+style = "bold blue"
+symbol = "✦ "
+number_threshold = 1
+symbol_threshold = 1
+
+# ---------------------------------------------------------------------------
+# Fill — spacer between left and right content
+# ---------------------------------------------------------------------------
+[fill]
+disabled = false
+symbol = " "
+
+# ---------------------------------------------------------------------------
+# Line break — separates info line from prompt line
+# ---------------------------------------------------------------------------
+[line_break]
+disabled = false
+
+# ---------------------------------------------------------------------------
+# Disabled modules (not needed for Bash-only setup)
+# ---------------------------------------------------------------------------
+[battery]
+disabled = true
+
+[package]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[python]
+disabled = true
+
+[rust]
+disabled = true
+
+[golang]
+disabled = true

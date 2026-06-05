@@ -1,0 +1,87 @@
+# =============================================================================
+# .github/workflows/integration.yml — Full integration test inside Docker
+#
+# Builds a clean Debian trixie-slim image, installs everything from scratch,
+# verifies all binaries and symlinks, then runs the full test suite again
+# to validate idempotency.
+# =============================================================================
+
+name: integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    name: Full install on Debian trixie
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.3
+        with:
+          submodules: recursive
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4.1.0
+
+      - name: Build Docker test image
+        uses: docker/build-push-action@v7.2.0
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: false
+          load: true
+          tags: dotfiles-test:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Verify README.md exists
+        run: test -f README.md
+
+      - name: Verify README.es.md exists
+        run: test -f README.es.md
+
+      - name: Verify English docs exist
+        run: |
+          test -f docs/en/installation.md
+          test -f docs/en/tools.md
+          test -f docs/en/ssh.md
+          test -f docs/en/docker.md
+          test -f docs/en/troubleshooting.md
+          test -f docs/en/uninstall.md
+
+      - name: Verify Spanish docs exist
+        run: |
+          test -f docs/es/installation.md
+          test -f docs/es/tools.md
+          test -f docs/es/ssh.md
+          test -f docs/es/docker.md
+          test -f docs/es/troubleshooting.md
+          test -f docs/es/uninstall.md
+
+      - name: Run Docker integration tests (first install)
+        run: |
+          docker run --rm dotfiles-test:ci \
+            bash -c "
+              bash tests/smoke/smoke.sh &&
+              bats --recursive tests/unit &&
+              bats --recursive tests/integration
+            "
+
+      - name: Run Docker integration tests (reinstall — idempotency check)
+        run: |
+          docker run --rm dotfiles-test:ci \
+            bash -c "
+              echo '=== Re-running make install ===' &&
+              make install &&
+              echo '=== Smoke test after reinstall ===' &&
+              bash tests/smoke/smoke.sh
+            "

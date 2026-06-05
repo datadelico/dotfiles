@@ -1,0 +1,64 @@
+# =============================================================================
+# .github/workflows/release.yml — Create a GitHub Release on version tags
+#
+# Triggered when a tag matching 'v*' is pushed (e.g., v1.0.0).
+# Creates a GitHub Release with a source tarball and zipball.
+# =============================================================================
+
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "${GITHUB_OUTPUT}"
+
+      - name: Create release archive
+        run: |
+          git archive \
+            --format=tar.gz \
+            --prefix="dotfiles-${{ steps.version.outputs.version }}/" \
+            --output="dotfiles-${{ steps.version.outputs.version }}.tar.gz" \
+            HEAD
+
+          git archive \
+            --format=zip \
+            --prefix="dotfiles-${{ steps.version.outputs.version }}/" \
+            --output="dotfiles-${{ steps.version.outputs.version }}.zip" \
+            HEAD
+
+      - name: Create GitHub Release
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: dotfiles-${{ steps.version.outputs.version }}
+          path: |
+            dotfiles-${{ steps.version.outputs.version }}.tar.gz
+            dotfiles-${{ steps.version.outputs.version }}.zip
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "Release ${{ github.ref_name }}" \
+            --generate-notes \
+            "dotfiles-${{ steps.version.outputs.version }}.tar.gz" \
+            "dotfiles-${{ steps.version.outputs.version }}.zip"

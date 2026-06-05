@@ -1,0 +1,162 @@
+// =============================================================================
+// Zellij configuration (~/.config/zellij/config.kdl)
+//
+// Documentation: https://zellij.dev/documentation/
+// Managed by GNU Stow (dotfiles/zellij/).
+//
+// Key bindings prefix: Ctrl+a (matches tmux prefix for consistency)
+// Theme: Dracula
+// =============================================================================
+
+// ---------------------------------------------------------------------------
+// Default shell
+// ---------------------------------------------------------------------------
+default_shell "bash"
+
+// ---------------------------------------------------------------------------
+// Scrollback lines
+// ---------------------------------------------------------------------------
+scroll_buffer_size 50000
+
+// ---------------------------------------------------------------------------
+// Copy on selection
+// ---------------------------------------------------------------------------
+copy_on_select false
+copy_command "xclip -selection clipboard"
+
+// ---------------------------------------------------------------------------
+// Mouse mode
+// ---------------------------------------------------------------------------
+mouse_mode true
+
+// ---------------------------------------------------------------------------
+// Pane frames — show borders
+// ---------------------------------------------------------------------------
+pane_frames true
+
+// ---------------------------------------------------------------------------
+// Mirror session — keep all clients in sync
+// ---------------------------------------------------------------------------
+mirror_session false
+
+// ---------------------------------------------------------------------------
+// Auto layout on startup
+// ---------------------------------------------------------------------------
+// default_layout "compact"
+
+// ---------------------------------------------------------------------------
+// Themes — Dracula
+// ---------------------------------------------------------------------------
+themes {
+    dracula {
+        fg "#f8f8f2"
+        bg "#282a36"
+        black "#21222c"
+        red "#ff5555"
+        green "#50fa7b"
+        yellow "#f1fa8c"
+        blue "#bd93f9"
+        magenta "#ff79c6"
+        cyan "#8be9fd"
+        white "#f8f8f2"
+        orange "#ffb86c"
+    }
+}
+
+theme "dracula"
+
+// ---------------------------------------------------------------------------
+// Key bindings
+//
+// Zellij uses a modal system: Normal / Locked / Pane / Tab / Resize / Session
+// The default prefix is Ctrl+g. Here we also bind Ctrl+a for compatibility
+// with muscle memory from tmux.
+// ---------------------------------------------------------------------------
+keybinds clear-defaults=false {
+    normal {
+        // Enter pane mode
+        bind "Ctrl a" { SwitchToMode "Pane"; }
+        // Enter tab mode
+        bind "Ctrl t" { SwitchToMode "Tab"; }
+        // Enter resize mode
+        bind "Ctrl r" { SwitchToMode "Resize"; }
+        // Enter scroll mode
+        bind "Ctrl s" { SwitchToMode "Scroll"; }
+        // Session manager
+        bind "Ctrl w" { SwitchToMode "Session"; }
+        // Lock all keys except the unlock binding
+        bind "Ctrl g" { SwitchToMode "Locked"; }
+        // Detach session
+        bind "Ctrl d" { Detach; }
+    }
+
+    pane {
+        bind "Escape" "Ctrl a" { SwitchToMode "Normal"; }
+        // Split panes
+        bind "|" { NewPane "Right"; SwitchToMode "Normal"; }
+        bind "-" { NewPane "Down"; SwitchToMode "Normal"; }
+        // Navigate panes — Vim-style
+        bind "h" { MoveFocus "Left"; }
+        bind "j" { MoveFocus "Down"; }
+        bind "k" { MoveFocus "Up"; }
+        bind "l" { MoveFocus "Right"; }
+        // Close pane
+        bind "x" { CloseFocus; SwitchToMode "Normal"; }
+        // Toggle fullscreen
+        bind "f" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
+        // Rename pane
+        bind "r" { SwitchToMode "RenamePane"; }
+    }
+
+    tab {
+        bind "Escape" "Ctrl t" { SwitchToMode "Normal"; }
+        bind "c" { NewTab; SwitchToMode "Normal"; }
+        bind "x" { CloseTab; SwitchToMode "Normal"; }
+        bind "h" "Left"  { GoToPreviousTab; }
+        bind "l" "Right" { GoToNextTab; }
+        bind "r" { SwitchToMode "RenameTab"; }
+        bind "1" { GoToTab 1; SwitchToMode "Normal"; }
+        bind "2" { GoToTab 2; SwitchToMode "Normal"; }
+        bind "3" { GoToTab 3; SwitchToMode "Normal"; }
+        bind "4" { GoToTab 4; SwitchToMode "Normal"; }
+        bind "5" { GoToTab 5; SwitchToMode "Normal"; }
+    }
+
+    resize {
+        bind "Escape" "Ctrl r" { SwitchToMode "Normal"; }
+        bind "h" "Left"  { Resize "Increase Left"; }
+        bind "j" "Down"  { Resize "Increase Down"; }
+        bind "k" "Up"    { Resize "Increase Up"; }
+        bind "l" "Right" { Resize "Increase Right"; }
+        bind "H" { Resize "Decrease Left"; }
+        bind "J" { Resize "Decrease Down"; }
+        bind "K" { Resize "Decrease Up"; }
+        bind "L" { Resize "Decrease Right"; }
+        bind "=" "+" { Resize "Increase"; }
+        bind "-" { Resize "Decrease"; }
+    }
+
+    scroll {
+        bind "Escape" "Ctrl s" { SwitchToMode "Normal"; }
+        bind "e" { EditScrollback; SwitchToMode "Normal"; }
+        bind "s" { SwitchToMode "EnterSearch"; SearchInput 0; }
+        bind "j" "Down"  { ScrollDown; }
+        bind "k" "Up"    { ScrollUp; }
+        bind "d" { HalfPageScrollDown; }
+        bind "u" { HalfPageScrollUp; }
+        bind "f" { PageScrollDown; }
+        bind "b" { PageScrollUp; }
+        bind "G" { ScrollToBottom; }
+        bind "g" { ScrollToTop; }
+    }
+
+    session {
+        bind "Escape" "Ctrl w" { SwitchToMode "Normal"; }
+        bind "d" { Detach; }
+        bind "s" { SessionManager; }
+    }
+
+    locked {
+        bind "Ctrl g" { SwitchToMode "Normal"; }
+    }
+}
