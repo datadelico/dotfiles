@@ -168,7 +168,7 @@ The Docker test validates:
 Defined in `~/.config/bash/aliases.sh`:
 
 | Alias | Command |
-|---|---|
+| --- | --- |
 | `dps` | `docker ps` with formatted table output |
 | `dpsa` | `docker ps -a` (including stopped containers) |
 | `dimg` | `docker images` |

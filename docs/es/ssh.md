@@ -13,7 +13,7 @@ contexto adicional para ayudarte a evitar confusiones entre shells locales y rem
 ### Qué cambia en SSH
 
 | Elemento | Local | SSH |
-|---|---|---|
+| --- | --- | --- |
 | Nombre de usuario | Oculto (usuario normal) | Mostrado en verde |
 | Nombre del host | Oculto | Mostrado en amarillo |
 | Etiqueta SSH en prompt derecho | No se muestra | `  SSH` visible |

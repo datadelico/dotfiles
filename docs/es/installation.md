@@ -27,7 +27,7 @@ exec bash
 El target `make install` ejecuta las siguientes fases en orden:
 
 | Fase | Qué hace |
-|---|---|
+| --- | --- |
 | `00-core.sh` | Instala paquetes apt básicos (build-essential, git, curl, fzf, eza, bat, etc.) |
 | `01-repos.sh` | Añade repositorios apt externos para GitHub CLI y Docker CE |
 | `02-binaries.sh` | Descarga starship, lazygit, lazydocker, zellij desde GitHub Releases |

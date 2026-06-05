@@ -5,6 +5,7 @@
 # Verifies that aliases.sh defines the expected aliases and that Debian-specific
 # binary name normalizations are present.
 # =============================================================================
+# shellcheck disable=SC1090  # BATS test file — source paths are dynamic
 
 load '../bats/test_helper/bats-support/load'
 load '../bats/test_helper/bats-assert/load'

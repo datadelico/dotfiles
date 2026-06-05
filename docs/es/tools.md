@@ -10,7 +10,7 @@ este repositorio de dotfiles.
 Instalados desde los repositorios oficiales de Debian 13 (trixie).
 
 | Paquete | Descripción |
-|---|---|
+| --- | --- |
 | `build-essential` | Cadena de compilación C/C++ (gcc, make, etc.) |
 | `curl` | Cliente HTTP en línea de comandos |
 | `file` | Determina el tipo de archivo |

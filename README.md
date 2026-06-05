@@ -29,7 +29,7 @@ It is designed for:
 ## Features
 
 | Category | Tools |
-|---|---|
+| --- | --- |
 | **Shell** | Bash, bash-completion, Starship prompt |
 | **Fuzzy find** | fzf, zoxide |
 | **File listing** | eza (modern ls replacement) |
@@ -76,7 +76,7 @@ idempotent: safe to run multiple times without breaking anything.
 ### Installation phases
 
 | Phase | Script | Description |
-|---|---|---|
+| --- | --- | --- |
 | 00 | `install/00-core.sh` | Core apt packages |
 | 01 | `install/01-repos.sh` | External apt repos (gh, Docker CE) |
 | 02 | `install/02-binaries.sh` | External binaries with checksum verification |

@@ -13,7 +13,7 @@ additional context to help you avoid confusion between local and remote shells.
 ### What changes on SSH
 
 | Element | Local | SSH |
-|---|---|---|
+| --- | --- | --- |
 | Username | Hidden (normal user) | Shown in green |
 | Hostname | Hidden | Shown in yellow |
 | Right prompt SSH label | Not shown | `  SSH` shown |

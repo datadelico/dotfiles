@@ -10,7 +10,7 @@ repository.
 Installed from the official Debian 13 (trixie) repositories.
 
 | Package | Description |
-|---|---|
+| --- | --- |
 | `build-essential` | C/C++ compiler toolchain (gcc, make, etc.) |
 | `curl` | Command-line HTTP client |
 | `file` | Determine file type |

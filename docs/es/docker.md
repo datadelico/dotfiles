@@ -169,7 +169,7 @@ El test de Docker valida:
 Definidos en `~/.config/bash/aliases.sh`:
 
 | Alias | Comando |
-|---|---|
+| --- | --- |
 | `dps` | `docker ps` con salida en tabla formateada |
 | `dpsa` | `docker ps -a` (incluyendo contenedores detenidos) |
 | `dimg` | `docker images` |

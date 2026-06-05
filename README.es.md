@@ -29,7 +29,7 @@ Está diseñado para:
 ## Características
 
 | Categoría | Herramientas |
-|---|---|
+| --- | --- |
 | **Shell** | Bash, bash-completion, prompt Starship |
 | **Búsqueda difusa** | fzf, zoxide |
 | **Listado de archivos** | eza (reemplazo moderno de ls) |
@@ -76,7 +76,7 @@ es idempotente: se puede ejecutar múltiples veces sin romper nada.
 ### Fases de instalación
 
 | Fase | Script | Descripción |
-|---|---|---|
+| --- | --- | --- |
 | 00 | `install/00-core.sh` | Paquetes apt básicos |
 | 01 | `install/01-repos.sh` | Repositorios apt externos (gh, Docker CE) |
 | 02 | `install/02-binaries.sh` | Binarios externos con verificación de checksum |
