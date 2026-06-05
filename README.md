@@ -50,7 +50,7 @@ It is designed for:
 
 ## Architecture
 
-```
+```text
 dotfiles/
 ├── config/versions.sh       ← centralized tool version definitions
 ├── dotfiles/                ← GNU Stow packages (symlinked into $HOME)
@@ -157,7 +157,7 @@ sudo apt-get update && sudo apt-get upgrade
 
 ## Available `make` targets
 
-```
+```text
 make help                    Show all targets
 make install                 Full installation (phases 00–05)
 make update                  Update external binaries

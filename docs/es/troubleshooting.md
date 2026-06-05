@@ -40,7 +40,7 @@ bash install/04-stow.sh
 
 **Síntoma:**
 
-```
+```text
 WARNING! stow: [archivo] is not owned by stow
 ```
 
@@ -225,6 +225,7 @@ Abre un issue en GitHub:
 [https://github.com/datadelico/dotfiles/issues](https://github.com/datadelico/dotfiles/issues)
 
 Incluye:
+
 - Versión de Debian: `cat /etc/os-release`
 - Versión de Bash: `bash --version`
 - Salida de `make smoke`
