@@ -16,7 +16,7 @@ additional context to help you avoid confusion between local and remote shells.
 | --- | --- | --- |
 | Username | Hidden (normal user) | Shown in green |
 | Hostname | Hidden | Shown in yellow |
-| Right prompt SSH label | Not shown | `  SSH` shown |
+| Right prompt SSH label | Not shown | `SSH` label shown |
 | Path | Full absolute path | Full absolute path |
 | Git status | Shown | Shown |
 
@@ -44,6 +44,7 @@ sshkey work-server "user@workstation"
 ```
 
 This creates:
+
 - `~/.ssh/work-server` — private key
 - `~/.ssh/work-server.pub` — public key
 
@@ -52,7 +53,7 @@ more secure.
 
 ### Recommended `~/.ssh/config` structure
 
-```
+```sshconfig
 # Global defaults
 Host *
     IdentitiesOnly yes
@@ -85,7 +86,7 @@ Host bastion
 
 For servers you administer, add these settings to `/etc/ssh/sshd_config`:
 
-```
+```sshconfig
 # Disable password authentication — use keys only
 PasswordAuthentication no
 ChallengeResponseAuthentication no

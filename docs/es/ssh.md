@@ -16,7 +16,7 @@ contexto adicional para ayudarte a evitar confusiones entre shells locales y rem
 | --- | --- | --- |
 | Nombre de usuario | Oculto (usuario normal) | Mostrado en verde |
 | Nombre del host | Oculto | Mostrado en amarillo |
-| Etiqueta SSH en prompt derecho | No se muestra | `  SSH` visible |
+| Etiqueta SSH en prompt derecho | No se muestra | etiqueta `SSH` visible |
 | Ruta | Ruta absoluta completa | Ruta absoluta completa |
 | Estado de git | Visible | Visible |
 
@@ -44,6 +44,7 @@ sshkey servidor-trabajo "usuario@workstation"
 ```
 
 Esto crea:
+
 - `~/.ssh/servidor-trabajo` — clave privada
 - `~/.ssh/servidor-trabajo.pub` — clave pública
 
@@ -52,7 +53,7 @@ son más pequeñas, más rápidas y más seguras.
 
 ### Estructura recomendada para `~/.ssh/config`
 
-```
+```sshconfig
 # Configuración global predeterminada
 Host *
     IdentitiesOnly yes
@@ -85,7 +86,7 @@ Host bastion
 
 Para los servidores que administras, añade estos parámetros a `/etc/ssh/sshd_config`:
 
-```
+```sshconfig
 # Deshabilitar autenticación por contraseña — usar solo claves
 PasswordAuthentication no
 ChallengeResponseAuthentication no
