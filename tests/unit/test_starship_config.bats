@@ -25,11 +25,9 @@ STARSHIP_CONFIG="${BATS_TEST_DIRNAME}/../../dotfiles/starship/.config/starship.t
     if ! command -v starship &>/dev/null; then
         skip "starship not installed"
     fi
-    run starship config --print-default
-    # If starship is installed, validate our config instead
-    run env STARSHIP_CONFIG="${STARSHIP_CONFIG}" starship print-path
-    # We just need it not to crash — any output is acceptable
-    assert [ "$status" -eq 0 ] || assert [ "$status" -eq 1 ]
+    # Validate that Starship can load and evaluate our config.
+    run env STARSHIP_CONFIG="${STARSHIP_CONFIG}" starship explain
+    assert_success
 }
 
 # ---------------------------------------------------------------------------

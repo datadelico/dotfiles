@@ -27,6 +27,7 @@ CORE_PACKAGES=(
     gnupg
     iproute2
     unzip
+    zip
     wget
     tar
     jq
@@ -83,7 +84,7 @@ fi
 # Collect packages that are not yet installed
 to_install=()
 for pkg in "${ALL_PACKAGES[@]}"; do
-    if ! dpkg -l "$pkg" &>/dev/null 2>&1; then
+    if ! dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "ok installed"; then
         to_install+=("$pkg")
     fi
 done

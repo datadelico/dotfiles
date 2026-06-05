@@ -174,6 +174,90 @@ make install-fonts           Install HackGen Nerd Font only
 
 ---
 
+## Docker test workflow for future changes
+
+Use the Docker test environment before opening a pull request or pushing changes
+that affect installation scripts, dotfiles, shell configuration, or CI tests.
+The container starts from a clean Debian 13 image, runs `make install`, applies
+the dotfiles with GNU Stow, and then executes smoke, unit, and integration
+tests.
+
+### 1. Build the Docker test image
+
+```bash
+make docker-build
+```
+
+This builds the `dotfiles-test:latest` image using `docker/Dockerfile`.
+
+### 2. Run all tests inside Docker
+
+```bash
+make docker-test
+```
+
+This runs the full Docker test suite through `docker/docker-compose.yml`:
+
+1. Smoke tests: binary and symlink checks
+2. BATS unit tests
+3. BATS integration tests
+
+A successful run should end with:
+
+```text
+All Docker tests passed.
+```
+
+### 3. Rebuild from scratch when debugging installation issues
+
+If you changed install scripts or want to avoid cached Docker layers, rebuild
+without cache:
+
+```bash
+docker build --no-cache --file docker/Dockerfile --tag dotfiles-test:latest .
+docker compose --file docker/docker-compose.yml run --rm dotfiles-test
+```
+
+### 4. Open an interactive shell in the test container
+
+Use this when a test fails and you need to inspect the installed environment:
+
+```bash
+docker compose --file docker/docker-compose.yml run --rm dotfiles-shell
+```
+
+Useful checks inside the container:
+
+```bash
+echo "$PATH"
+command -v starship lazygit lazydocker zellij tmux
+bash tests/smoke/smoke.sh
+bats --recursive tests/unit
+bats --recursive tests/integration
+```
+
+### 5. Clean up Docker test containers and image
+
+```bash
+docker compose --file docker/docker-compose.yml down --remove-orphans
+docker image rm dotfiles-test:latest
+```
+
+### Recommended pre-push checklist
+
+Before pushing changes, run:
+
+```bash
+make lint
+make test
+make docker-test
+```
+
+If `make docker-test` passes, the repository should be close to the same clean
+Debian environment used by CI.
+
+---
+
 ## Tool descriptions
 
 ### Starship prompt

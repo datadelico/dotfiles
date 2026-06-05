@@ -175,6 +175,90 @@ make install-fonts           Instala solo la fuente HackGen Nerd Font
 
 ---
 
+## Flujo de tests con Docker para cambios futuros
+
+Usa el entorno de tests Docker antes de abrir un pull request o subir cambios
+que afecten a scripts de instalación, dotfiles, configuración de shell o tests
+de CI. El contenedor parte de una imagen limpia de Debian 13, ejecuta
+`make install`, aplica los dotfiles con GNU Stow y después ejecuta smoke tests,
+tests unitarios y tests de integración.
+
+### 1. Construir la imagen Docker de test
+
+```bash
+make docker-build
+```
+
+Esto construye la imagen `dotfiles-test:latest` usando `docker/Dockerfile`.
+
+### 2. Ejecutar todos los tests dentro de Docker
+
+```bash
+make docker-test
+```
+
+Esto ejecuta la suite completa mediante `docker/docker-compose.yml`:
+
+1. Smoke tests: comprobaciones de binarios y symlinks
+2. Tests unitarios BATS
+3. Tests de integración BATS
+
+Una ejecución correcta debería terminar con:
+
+```text
+All Docker tests passed.
+```
+
+### 3. Reconstruir desde cero al depurar problemas de instalación
+
+Si cambiaste scripts de instalación o quieres evitar capas cacheadas de Docker,
+reconstruye sin caché:
+
+```bash
+docker build --no-cache --file docker/Dockerfile --tag dotfiles-test:latest .
+docker compose --file docker/docker-compose.yml run --rm dotfiles-test
+```
+
+### 4. Abrir una shell interactiva en el contenedor de test
+
+Úsalo cuando falle un test y necesites inspeccionar el entorno instalado:
+
+```bash
+docker compose --file docker/docker-compose.yml run --rm dotfiles-shell
+```
+
+Comprobaciones útiles dentro del contenedor:
+
+```bash
+echo "$PATH"
+command -v starship lazygit lazydocker zellij tmux
+bash tests/smoke/smoke.sh
+bats --recursive tests/unit
+bats --recursive tests/integration
+```
+
+### 5. Limpiar contenedores e imagen de test
+
+```bash
+docker compose --file docker/docker-compose.yml down --remove-orphans
+docker image rm dotfiles-test:latest
+```
+
+### Checklist recomendado antes de hacer push
+
+Antes de subir cambios, ejecuta:
+
+```bash
+make lint
+make test
+make docker-test
+```
+
+Si `make docker-test` pasa, el repositorio debería estar cerca del mismo entorno
+limpio de Debian usado por CI.
+
+---
+
 ## Descripción de herramientas
 
 ### Prompt Starship

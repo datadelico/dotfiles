@@ -55,6 +55,11 @@ WORKDIR /home/${USERNAME}/dotfiles
 ENV SKIP_DOCKER=1
 ENV SKIP_GUI=1
 
+# Ensure user-installed binaries (starship, lazygit, lazydocker, zellij, etc.)
+# under ~/.local/bin are on PATH for all shells, including the
+# non-interactive/non-login shells used by docker-compose to run the tests.
+ENV PATH="/home/${USERNAME}/.local/bin:${PATH}"
+
 # Install everything (submodules are already in the repo copy)
 RUN make install
 

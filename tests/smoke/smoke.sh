@@ -24,10 +24,10 @@ check() {
     local cmd="${2}"
     if eval "${cmd}" &>/dev/null; then
         echo -e "  ${GREEN}PASS${NC}  ${label}"
-        ((PASS++))
+        ((++PASS))
     else
         echo -e "  ${RED}FAIL${NC}  ${label}"
-        ((FAIL++))
+        ((++FAIL))
     fi
 }
 
@@ -35,7 +35,7 @@ skip_check() {
     local label="${1}"
     local reason="${2}"
     echo -e "  ${YELLOW}SKIP${NC}  ${label} (${reason})"
-    ((SKIP++))
+    ((++SKIP))
 }
 
 echo "======================================================"

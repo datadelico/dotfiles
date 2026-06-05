@@ -37,7 +37,7 @@ verify_binary() {
         pass "${name}"
     else
         fail "${name} — not found in PATH"
-        ((ERRORS++))
+        ((++ERRORS))
     fi
 }
 
@@ -64,7 +64,7 @@ if command -v batcat &>/dev/null || command -v bat &>/dev/null; then
     pass "bat (batcat)"
 else
     fail "bat — neither 'bat' nor 'batcat' found"
-    ((ERRORS++))
+    ((++ERRORS))
 fi
 
 # fd on Debian is fdfind
@@ -72,7 +72,7 @@ if command -v fdfind &>/dev/null || command -v fd &>/dev/null; then
     pass "fd (fdfind)"
 else
     fail "fd — neither 'fd' nor 'fdfind' found"
-    ((ERRORS++))
+    ((++ERRORS))
 fi
 
 # ---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ check_link() {
         pass "${path}"
     else
         fail "${path} — missing"
-        ((ERRORS++))
+        ((++ERRORS))
     fi
 }
 
@@ -106,7 +106,7 @@ if bash --norc -c 'source "${HOME}/.bashrc" && echo "bashrc_ok"' 2>/dev/null | g
     pass "${HOME}/.bashrc sources without errors"
 else
     fail "${HOME}/.bashrc has errors on source"
-    ((ERRORS++))
+    ((++ERRORS))
 fi
 
 # ---------------------------------------------------------------------------
@@ -117,13 +117,13 @@ if command -v starship &>/dev/null; then
         pass "starship init bash"
     else
         fail "starship init bash failed"
-        ((ERRORS++))
+        ((++ERRORS))
     fi
     starship_version="$(starship --version | head -1)"
     pass "starship version: ${starship_version}"
 else
     fail "starship not found"
-    ((ERRORS++))
+    ((++ERRORS))
 fi
 
 # ---------------------------------------------------------------------------
@@ -133,14 +133,14 @@ if bash install/04-stow.sh; then
     pass "stow --restow is idempotent"
 else
     fail "stow --restow failed on second run"
-    ((ERRORS++))
+    ((++ERRORS))
 fi
 
 if bash install/02-binaries.sh; then
     pass "install/02-binaries.sh is idempotent"
 else
     fail "install/02-binaries.sh failed on second run"
-    ((ERRORS++))
+    ((++ERRORS))
 fi
 
 # ---------------------------------------------------------------------------
