@@ -14,6 +14,9 @@ load '../bats/test_helper/bats-assert/load'
 ALIASES_FILE="${BATS_TEST_DIRNAME}/../../dotfiles/bash/.config/bash/aliases.sh"
 
 setup() {
+    # Enable alias expansion — required in non-interactive bash for type -t
+    # and alias lookup to work correctly.
+    shopt -s expand_aliases
     # Load the aliases file into a subshell-friendly environment
     # shellcheck source=/dev/null
     source "${ALIASES_FILE}"

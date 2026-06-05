@@ -55,6 +55,9 @@ jobs:
         run: |
           SKIP_GUI=1 bash install/02-binaries.sh
 
+      - name: Add ~/.local/bin to PATH
+        run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
       - name: Remove default shell dotfiles (prevents Stow conflicts)
         run: |
           rm -f ~/.bashrc ~/.bash_profile ~/.bash_logout ~/.profile ~/.inputrc
