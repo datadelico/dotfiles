@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # =============================================================================
 # ~/.bashrc — Interactive shell configuration
 #
